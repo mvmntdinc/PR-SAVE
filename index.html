@@ -36,7 +36,7 @@
         
         <!-- Capa do Álbum -->
         <div class="relative w-full aspect-square rounded-lg overflow-hidden album-shadow">
-                        <img id="album-cover" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop" 
+            <img id="album-cover" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop" 
                  alt="Capa do Álbum - Franco Trapboy" 
                  class="w-full h-full object-cover">
         </div>
@@ -83,7 +83,7 @@
 
         <!-- Rodapé com a Logo MVMNTD INC -->
         <footer class="pt-8 pb-12 text-center">
-                        <img src="IMG_3658.jpg" alt="MVMNTD INC Logo" 
+            <img src="IMG_3658.jpg" alt="MVMNTD INC Logo" 
                  onerror="this.style.display='none'; document.getElementById('logo-fallback').classList.remove('hidden');"
                  class="w-32 h-auto mx-auto opacity-80 hover:opacity-100 transition-opacity mb-4">
             
@@ -99,8 +99,7 @@
 
     <script>
         /**
-         * COLA O TEU NOVO LINK ABAIXO:
-         * Lembra-te de que o link deve terminar com /exec
+         * URL DO APP DA WEB ATUALIZADA
          */
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwe00MnhNEun5KIIHKuvVEXAHu-n-Yd6hRV0VYMi8_i1wasrs_cjvx5PNi6Hqy31tNRag/exec';
         
@@ -119,17 +118,14 @@
             saveBtn.innerText = "A ENVIAR...";
             feedback.classList.add('hidden');
 
-            // Usamos URLSearchParams para que o Google Script receba os dados corretamente no e.parameter
+            // Parâmetros para o Google Script
             const params = new URLSearchParams();
             params.append('email', emailValue);
             params.append('data', new Date().toLocaleString('pt-BR'));
             params.append('origem', 'Pre-Save Franco Trapboy');
 
             try {
-                /**
-                 * Usamos mode: 'no-cors' para evitar o erro de redirecionamento do Google.
-                 * Isto envia o dado silenciosamente e com sucesso.
-                 */
+                // Envio silencioso via no-cors
                 await fetch(scriptURL, { 
                     method: 'POST', 
                     body: params,
@@ -139,7 +135,6 @@
                     }
                 });
 
-                // Se o fetch não disparar um erro de rede, assumimos que o dado foi enviado
                 showFeedback("✅ Sucesso! E-mail guardado na lista.", "text-green-400 bg-green-400/10");
                 form.reset();
                 form.style.opacity = "0.5";
