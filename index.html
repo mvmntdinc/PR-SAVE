@@ -31,7 +31,6 @@
         
         <!-- Capa do Álbum -->
         <div class="relative w-full aspect-square rounded-lg overflow-hidden album-shadow">
-            <!--  -->
             <img id="album-cover" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop" 
                  alt="Capa do Álbum - Franco Trapboy" 
                  class="w-full h-full object-cover">
@@ -79,7 +78,6 @@
 
         <!-- Rodapé com a Logo MVMNTD INC -->
         <footer class="pt-8 pb-12 text-center">
-            <!--  -->
             <img src="IMG_3658.jpg" alt="MVMNTD INC Logo" 
                  onerror="this.style.display='none'; document.getElementById('logo-fallback').classList.remove('hidden');"
                  class="w-32 h-auto mx-auto opacity-80 hover:opacity-100 transition-opacity mb-4">
@@ -95,44 +93,50 @@
     </div>
 
     <script>
+        // Verifique se este link termina com /exec
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwe00MnhNEun5KIIHKuvVEXAHu-n-Yd6hRV0VYMi8_i1wasrs_cjvx5PNi6Hqy31tNRag/exec';
         const form = document.getElementById('pre-save-form');
         const saveBtn = document.getElementById('save-btn');
         const feedback = document.getElementById('feedback-msg');
 
-        form.addEventListener('submit', e => {
+        form.addEventListener('submit', async e => {
             e.preventDefault();
             
             const emailInput = document.getElementById('email-input');
             const emailValue = emailInput.value;
 
+            // Bloquear botão e mostrar carregamento
             saveBtn.disabled = true;
             saveBtn.innerText = "A ENVIAR...";
             feedback.classList.add('hidden');
 
-            // Preparar dados para o Apps Script
-            const urlEncodedData = new URLSearchParams();
-            urlEncodedData.append('email', emailValue);
-            urlEncodedData.append('data', new Date().toLocaleString('pt-BR'));
-            urlEncodedData.append('origem', 'Pre-Save Franco Trapboy');
+            // Usar FormData para garantir compatibilidade total com o doPost(e) do Google
+            const formData = new FormData();
+            formData.append('email', emailValue);
+            formData.append('data', new Date().toLocaleString('pt-BR'));
+            formData.append('origem', 'Pre-Save Franco Trapboy');
 
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: urlEncodedData,
-                mode: 'no-cors'
-            })
-            .then(() => {
+            try {
+                // O modo 'no-cors' envia o dado mas não permite ler a resposta (o Google redireciona e isso causa erro de CORS)
+                // É a forma mais estável para envios simples
+                await fetch(scriptURL, { 
+                    method: 'POST', 
+                    body: formData,
+                    mode: 'no-cors'
+                });
+
+                // Como usamos no-cors, assumimos sucesso se a promise resolver
                 showFeedback("✅ Sucesso! E-mail guardado na lista.", "text-green-400");
                 form.reset();
                 form.style.opacity = "0.5";
                 form.style.pointerEvents = "none";
-            })
-            .catch(error => {
-                console.error('Erro!', error.message);
-                showFeedback("Erro ao enviar. Tenta novamente.", "text-red-400");
+
+            } catch (error) {
+                console.error('Erro de rede:', error);
+                showFeedback("Erro ao enviar. Tente novamente.", "text-red-400");
                 saveBtn.disabled = false;
                 saveBtn.innerText = "GARANTIR ACESSO ANTECIPADO";
-            });
+            }
         });
 
         function showFeedback(msg, colorClass) {
