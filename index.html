@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            background-color: #000000;
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
         }
@@ -17,7 +17,11 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .album-shadow {
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+        /* Efeito de brilho no botão */
+        .btn-glow:hover {
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
         }
     </style>
 </head>
@@ -28,6 +32,7 @@
         
         <!-- Capa do Álbum -->
         <div class="relative w-full aspect-square rounded-lg overflow-hidden album-shadow">
+            <!--  -->
             <img id="album-cover" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop" 
                  alt="Capa do Álbum - Franco Trapboy" 
                  class="w-full h-full object-cover">
@@ -36,26 +41,27 @@
         <!-- Info do Artista -->
         <div class="text-center space-y-2">
             <h1 class="text-3xl font-bold tracking-tight">Franco Trapboy</h1>
-            <p class="text-gray-400 text-lg">Novo Lançamento - Em Breve</p>
+            <p class="text-gray-400 text-lg uppercase tracking-widest text-sm">Novo Lançamento - Brevemente</p>
         </div>
 
-        <!-- Formulário de Email -->
+        <!-- Formulário de Email (Google Script Backend) -->
         <div class="w-full glass-card p-6 rounded-2xl space-y-4">
-            <h2 class="text-sm font-semibold uppercase tracking-widest text-blue-400 text-center">Fique sabendo primeiro</h2>
-            <div id="form-container" class="space-y-3">
-                <input type="email" id="email-input" placeholder="Seu melhor e-mail" 
-                       class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                <button id="save-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition-all transform active:scale-95 disabled:opacity-50">
+            <h2 class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 text-center">Fica a saber primeiro</h2>
+            <form id="pre-save-form" class="space-y-3">
+                <input type="email" name="email" id="email-input" placeholder="O teu melhor e-mail" required
+                       class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder:text-gray-600">
+                <button type="submit" id="save-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition-all transform active:scale-95 btn-glow">
                     GARANTIR ACESSO ANTECIPADO
                 </button>
-            </div>
+            </form>
             <p id="feedback-msg" class="text-center text-sm hidden"></p>
         </div>
 
         <!-- Lista de Plataformas -->
         <div class="w-full space-y-3">
-            <p class="text-center text-xs text-gray-500 uppercase tracking-widest mb-4">Ou escolha sua plataforma</p>
+            <p class="text-center text-[10px] text-gray-500 uppercase tracking-[0.3em] mb-4">Escolhe a tua plataforma</p>
             
+            <!-- Spotify -->
             <div class="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
                 <div class="flex items-center gap-3">
                     <svg class="w-6 h-6 text-[#1DB954]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.49 17.306c-.215.353-.674.464-1.027.25-2.85-1.74-6.436-2.13-10.662-1.164-.403.092-.81-.16-.902-.562-.093-.403.16-.81.562-.902 4.62-1.057 8.59-.61 11.78 1.34.352.214.463.674.25 1.027zm1.464-3.26c-.27.44-.846.58-1.287.31-3.26-2.003-8.225-2.585-12.078-1.415-.494.15-1.01-.13-1.16-.623-.15-.494.13-1.01.623-1.16 4.402-1.336 9.885-.688 13.595 1.59.44.27.58.846.31 1.287zm.126-3.41c-3.91-2.322-10.37-2.536-14.135-1.393-.6.182-1.238-.163-1.42-.763-.182-.6.163-1.238.763-1.42 4.316-1.31 11.45-1.06 15.94 1.605.54.32.716 1.02.395 1.56-.32.54-1.02.716-1.56.395z"/></svg>
@@ -64,6 +70,7 @@
                 <button class="px-4 py-1.5 border border-white/20 rounded-md text-sm font-semibold hover:bg-white hover:text-black transition-all">Pre-Save</button>
             </div>
 
+            <!-- Apple Music -->
             <div class="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
                 <div class="flex items-center gap-3">
                     <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.115 17.502c-1.342 0-2.396-.92-2.396-2.18 0-1.283 1.054-2.227 2.396-2.227 1.343 0 2.396.944 2.396 2.227 0 1.26-1.053 2.18-2.396 2.18zm-2.88-1.558V8.163l5.053-1.135v2.327l-3.32.748v5.842c0 1.96-1.742 3.394-3.793 3.394-2.073 0-3.815-1.433-3.815-3.394 0-1.938 1.742-3.371 3.815-3.371.493 0 .964.084 1.385.241l.675.253z"/></svg>
@@ -73,107 +80,64 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="pt-8 pb-12 text-center space-y-4">
-            <p class="text-xs text-gray-500 max-w-xs leading-relaxed">
-                Ao utilizar este serviço, você concorda com nossa Política de Privacidade e Termos de Uso.
+        <!-- Rodapé com a Logo MVMNTD INC -->
+        <footer class="pt-8 pb-12 text-center">
+            <!--  -->
+            <img src="IMG_3658.jpg" alt="MVMNTD INC Logo" 
+                 onerror="this.style.display='none'; document.getElementById('logo-fallback').classList.remove('hidden');"
+                 class="w-32 h-auto mx-auto opacity-80 hover:opacity-100 transition-opacity mb-4">
+            
+            <div id="logo-fallback" class="hidden text-xs text-gray-500 font-bold uppercase tracking-widest">
+                MVMNTD INC <br> RJ CULTURE
+            </div>
+            
+            <p class="text-[10px] text-gray-600 mt-6 uppercase tracking-[0.4em] opacity-40">
+                2025 &copy; Franco Trapboy
             </p>
         </footer>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Lógica para carregar configurações do ambiente ou manual
-        let firebaseConfig;
-        try {
-            firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-                apiKey: "COLOQUE_SUA_API_KEY_AQUI", 
-                authDomain: "seu-projeto.firebaseapp.com",
-                projectId: "seu-projeto",
-                storageBucket: "seu-projeto.appspot.com",
-                messagingSenderId: "00000000",
-                appId: "1:0000000:web:000000"
-            };
-        } catch (e) {
-            console.error("Configuração do Firebase ausente ou inválida.");
-        }
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'franco-presave-01';
-        
-        let db, auth, user;
-
-        const initFirebase = async () => {
-            if (!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey.includes("COLOQUE_SUA")) {
-                console.warn("Firebase não configurado corretamente. O formulário não funcionará até que você insira sua API Key no código.");
-                return;
-            }
-
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-
-            // Regra 3: Autenticar antes de qualquer query
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Erro na autenticação:", error);
-            }
-
-            onAuthStateChanged(auth, (u) => {
-                user = u;
-                if (u) console.log("Autenticado como:", u.uid);
-            });
-        };
-
-        // Iniciar
-        initFirebase();
-
-        const emailInput = document.getElementById('email-input');
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwe00MnhNEun5KIIHKuvVEXAHu-n-Yd6hRV0VYMi8_i1wasrs_cjvx5PNi6Hqy31tNRag/exec';
+        const form = document.getElementById('pre-save-form');
         const saveBtn = document.getElementById('save-btn');
         const feedback = document.getElementById('feedback-msg');
 
-        saveBtn.addEventListener('click', async () => {
-            const email = emailInput.value.trim();
+        form.addEventListener('submit', e => {
+            e.preventDefault();
             
-            if (!email || !email.includes('@')) {
-                showFeedback("Por favor, insira um e-mail válido.", "text-red-400");
-                return;
-            }
+            const email = document.getElementById('email-input').value;
+            if(!email) return;
 
-            if (!user) {
-                showFeedback("Aguardando conexão segura...", "text-yellow-400");
-                return;
-            }
-
+            // Interface de carregamento
             saveBtn.disabled = true;
-            saveBtn.innerText = "SALVANDO...";
+            saveBtn.innerText = "A ENVIAR...";
+            feedback.classList.add('hidden');
 
-            try {
-                // Regra 1: Caminho estrito para o Firestore
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'leads'), {
-                    email: email,
-                    artist: "Franco Trapboy",
-                    createdAt: serverTimestamp(),
-                    uid: user.uid
-                });
+            // Criar dados para enviar
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('data', new Date().toLocaleString('pt-BR'));
+            formData.append('origem', 'Pre-Save Franco Trapboy');
 
-                showFeedback("✅ Sucesso! Avisaremos você no lançamento.", "text-green-400");
-                emailInput.value = "";
-                document.getElementById('form-container').style.opacity = "0.5";
-                document.getElementById('form-container').style.pointerEvents = "none";
-            } catch (e) {
-                console.error("Erro ao salvar no Firestore:", e);
-                showFeedback("Erro ao salvar. Verifique se as regras do Firestore permitem escrita.", "text-red-400");
+            // Enviar para o Google Script
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: formData,
+                mode: 'no-cors' // Necessário para evitar erros de redirecionamento do Google
+            })
+            .then(response => {
+                showFeedback("✅ Sucesso! E-mail guardado na lista.", "text-green-400");
+                form.reset();
+                form.style.opacity = "0.5";
+                form.style.pointerEvents = "none";
+            })
+            .catch(error => {
+                console.error('Erro!', error.message);
+                showFeedback("Ocorreu um erro ao enviar. Tenta novamente.", "text-red-400");
                 saveBtn.disabled = false;
                 saveBtn.innerText = "GARANTIR ACESSO ANTECIPADO";
-            }
+            });
         });
 
         function showFeedback(msg, colorClass) {
